@@ -7,6 +7,8 @@ function add2Draw(obj) {
 }
 var cols = [];
 
+var stuffLoaded = {};
+
 var player = {
   playing: false,
   bpm: 120,
@@ -272,12 +274,23 @@ var Gif = function(path, img_number, x, y, width_factor, height_factor, centered
   add2Draw(this);
   if (path) {
     for (var i = 0; i < this.img_number; i++) {
-      this.imgs[i] = loadImage(this.path_1 + i + '.' + this.path_ext, function() {
+      var tpath = function(n) {return that.path_1 + n + '.' + that.path_ext;};
+      var fload = function(imgimg) {
         that.n_loaded += 1;
         if (that.n_loaded >= that.img_number) {
           that.loaded = true;
+          for (var i = 0; i < that.imgs.length; i++) {
+            stuffLoaded[tpath(i)] = that.imgs[i];
+          }
         }
-      });
+      };
+      if (stuffLoaded[tpath(i)]) {
+        this.imgs[i] = stuffLoaded[tpath(i)];
+        fload();
+      }
+      else {
+        this.imgs[i] = loadImage(tpath(i), fload);
+      }
     }
   }
   else {

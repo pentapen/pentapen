@@ -12,6 +12,9 @@ var stuffLoaded = {};
 var player = {
   playing: false,
   bpm: 120,
+  bmp_min: 80,
+  bpm_max: 500,
+  bpm_default: 120,
   step: 0,
   frameRate: 60,
   showFPS: false,
@@ -20,7 +23,7 @@ var player = {
   fadeRate: 0.01,
   proceedOnStep: 0,
   getSteps: function(figure) {
-    var bps = player.bpm/60
+    var bps = player.bpm/60;
     return player.frameRate * 1/bps * figure.duration;
   },
   playback_start: function() {
@@ -392,7 +395,7 @@ var layout = {
     this.bpm_slider_size = 280;
     this.bpm_slider_x = 520;
     this.bpm_slider_y = height-50;
-    this.bpm_slider = createSlider(40, 300, 120, 5);
+    this.bpm_slider = createSlider(player.bmp_min, player.bpm_max, player.bpm_default, 5);
     this.bpm_slider.style('width', this.bpm_slider_size + 'px');
     this.center();
   },
@@ -475,9 +478,13 @@ function setup() {
   }
 }
 
+var mills = 0;
+var prevmills = 0;
 function draw() {
   clear();
-  player.step += 1;
+  mills = performance.now();
+  player.step += (mills - prevmills)/(1000/player.frameRate);
+  prevmills = performance.now();
   pentagram.drawdraw();
   for (var k in draw_items) {
     if (typeof(draw_items[k].loaded) === "undefined" || draw_items[k].loaded) {
@@ -494,7 +501,7 @@ function draw() {
   }
   player.playback_update();
   if (player.playing) {
-    line(cols[player.currcol].x+20, 10, cols[player.currcol].x, 500);
+    line(cols[player.currcol].x+20, 10, cols[player.currcol].x, 400);
   }
 }
 

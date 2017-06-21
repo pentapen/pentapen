@@ -1,3 +1,6 @@
+var LINKS = {
+  MAINMENU: "/index.html",
+};
 var id_counter = 0;
 var draw_items = {};
 function add2Draw(obj) {
@@ -390,7 +393,11 @@ var layout = {
     //border
     new Gif("assets/selectors_border00.png", 5, 92, 412);
     // buttons
-    this.playbutt = new Playbutt(505+80, 412);
+    this.playbutt = new Playbutt(505+40, 412);
+    // exit
+    this.exitbutt = new Button("assets/button_exit00.png", this.playbutt.x + 140, this.playbutt.y, function() {
+      window.location.href = LINKS.MAINMENU;
+    });
     // bpm slider
     this.bpm_slider_size = 280;
     this.bpm_slider_x = 520;
@@ -418,9 +425,23 @@ var layout = {
   },
 };
 
+var Button = function(paf, x, y, action) {
+  var that = this;
+  this.x = x;
+  this.y = y;
+  this.gif = new Gif(paf, 4, x, y);
+  this.gif.whenclicked = function() {
+    if (that.gif.hovered()) {
+      action(that);
+    }
+  };
+}
+
 var Playbutt = function(x, y) {
   var that = this;
   add2Draw(this);
+  this.x = x;
+  this.y = y;
   this.sprite_play = new Gif("assets/button_play00.png", 5, x, y);
   this.sprite_stop = new Gif("assets/button_stop00.png", 5, x, y);
   this.sprite_stop.hidehide = true;

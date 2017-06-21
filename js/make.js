@@ -400,7 +400,6 @@ var layout = {
     this.center();
   },
   center: function() {
-    console.log(this);
     if (this.bpm_slider) {
       this.bpm_slider.position(gameview.cnv.position().x+this.bpm_slider_x, gameview.cnv.position().y+this.bpm_slider_y);
     }
@@ -519,7 +518,7 @@ function mouseClicked() {
 }
 
 function keyPressed() {
-  console.log(keyCode);
+  // console.log(keyCode);
   if (keyCode === 32) {
     layout.playbutt.hitplay();
   }

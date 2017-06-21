@@ -12,3 +12,91 @@ body {
   border-width: 1px;
   border-style: solid;
 }*/
+
+/*------------------------slider------------------------*/
+input[type=range] {
+  -webkit-appearance: none;
+  width: 100%;
+  margin: 6.7px 0;
+}
+input[type=range]:focus {
+  outline: none;
+}
+input[type=range]::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 11.6px;
+  /*cursor: pointer;*/
+  box-shadow: 1.5px 1.5px 1.7px #f0a6df, 0px 0px 1.5px #f4bce7;
+  background: rgba(37, 231, 246, 0.04);
+  border-radius: 25px;
+  border: 1px solid rgba(190, 199, 184, 0.62);
+}
+input[type=range]::-webkit-slider-thumb {
+  box-shadow: 3.8px 3.8px 5.8px #91b4ff, 0px 0px 3.8px #abc5ff;
+  border: 3.9px solid rgba(115, 203, 234, 0.83);
+  height: 22px;
+  width: 25px;
+  border-radius: 8px;
+  background: rgba(253, 67, 122, 0.59);
+  /*cursor: pointer;*/
+  -webkit-appearance: none;
+  margin-top: -7.7px;
+}
+input[type=range]:focus::-webkit-slider-runnable-track {
+  background: rgba(140, 242, 250, 0.04);
+}
+input[type=range]::-moz-range-track {
+  width: 100%;
+  height: 11.6px;
+  /*cursor: pointer;*/
+  box-shadow: 1.5px 1.5px 1.7px #f0a6df, 0px 0px 1.5px #f4bce7;
+  background: rgba(37, 231, 246, 0.04);
+  border-radius: 25px;
+  border: 1px solid rgba(190, 199, 184, 0.62);
+}
+input[type=range]::-moz-range-thumb {
+  box-shadow: 3.8px 3.8px 5.8px #91b4ff, 0px 0px 3.8px #abc5ff;
+  border: 3.9px solid rgba(115, 203, 234, 0.83);
+  height: 22px;
+  width: 25px;
+  border-radius: 8px;
+  background: rgba(253, 67, 122, 0.59);
+  /*cursor: pointer;*/
+}
+input[type=range]::-ms-track {
+  width: 100%;
+  height: 11.6px;
+  /*cursor: pointer;*/
+  background: transparent;
+  border-color: transparent;
+  color: transparent;
+}
+input[type=range]::-ms-fill-lower {
+  background: rgba(7, 157, 169, 0.04);
+  border: 1px solid rgba(190, 199, 184, 0.62);
+  border-radius: 50px;
+  box-shadow: 1.5px 1.5px 1.7px #f0a6df, 0px 0px 1.5px #f4bce7;
+}
+input[type=range]::-ms-fill-upper {
+  background: rgba(37, 231, 246, 0.04);
+  border: 1px solid rgba(190, 199, 184, 0.62);
+  border-radius: 50px;
+  box-shadow: 1.5px 1.5px 1.7px #f0a6df, 0px 0px 1.5px #f4bce7;
+}
+input[type=range]::-ms-thumb {
+  box-shadow: 3.8px 3.8px 5.8px #91b4ff, 0px 0px 3.8px #abc5ff;
+  border: 3.9px solid rgba(115, 203, 234, 0.83);
+  height: 22px;
+  width: 25px;
+  border-radius: 8px;
+  background: rgba(253, 67, 122, 0.59);
+  /*cursor: pointer;*/
+  height: 11.6px;
+}
+input[type=range]:focus::-ms-fill-lower {
+  background: rgba(37, 231, 246, 0.04);
+}
+input[type=range]:focus::-ms-fill-upper {
+  background: rgba(140, 242, 250, 0.04);
+}
+/*-----------------------/slider------------------------*/

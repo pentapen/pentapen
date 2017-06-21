@@ -56,6 +56,11 @@ var player = {
       soundsounds[i].stopstop();
     }
   },
+  clearNotes: function() {
+    for (var i = 0; i < cols.length; i++) {
+      cols[i].removeAll();
+    }
+  },
 };
 var noteSounds = [];
 var NoteSound = function(letter, name, freq, octave) {
@@ -230,10 +235,13 @@ var Column = function(x) {
     }
   }
 };
-Column.prototype.attachRest = function() {
+Column.prototype.removeAll = function() {
   for (var i = 0; i < this.cells.length; i++) {
     this.cells[i].removeFigure();
   }
+};
+Column.prototype.attachRest = function() {
+  this.removeAll();
   this.maincell.attachFigure();
 };
 Column.prototype.playplay = function() {
@@ -545,6 +553,9 @@ function keyPressed() {
   }
   else if (keyCode === 70) {
     player.showFPS = !player.showFPS;
+  }
+  else if (keyCode === 67) {
+    player.clearNotes();
   }
   // return false;
 }

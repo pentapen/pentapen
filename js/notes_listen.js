@@ -10,6 +10,7 @@ function add2Draw(obj) {
 }
 
 var stuffLoaded = {};
+var fcounter = 0;
 
 var player = {
   score: 0,
@@ -33,11 +34,11 @@ var player = {
   cooldown: function(pickAnother) {
     this.playback_on = false;
     setTimeout(function() {
-      player.playback_on = true;
       if (pickAnother) {
         player.pickSecretNote();
       }
       player.playNote();
+      setTimeout(function() {player.playback_on = true;}, (player.playback_duration + 0.1)*1000);
     }, player.cooldown_rate*1000);
   },
 };
@@ -155,15 +156,35 @@ var Cell = function(soundsound, x,y) {
         if (player.picked == that) {
           player.score += 1;
           player.cooldown(true);
+          new PropertyChanger(that.gif, "y", function(targ) {
+            targ.y += Math.sin((this.fcounter_ini - fcounter)/6) * 10;
+          }, 38);
         }
         else {
+          new PropertyChanger(that.gif, "x", function(targ) {
+            targ.x += Math.sin(fcounter) * 5;
+          }, 45);
           player.cooldown(false);
         }
       }
     }
   };
 };
+var PropertyChanger = function(forWhom, prop, func, duration) {
+  // duration is frames
+  add2Draw(this);
+  var that = this;
+  this.prop_ini = forWhom[prop];
+  this.fcounter_ini = fcounter;
+  this.drawdraw = function() {
+    func.call(that, forWhom);
+    if ((fcounter - that.fcounter_ini) > duration) {
+      delete draw_items[this.idid];
+      forWhom[prop] = that.prop_ini;
+    }
+  };
 
+};
 
 var Gif = function(path, img_number, x, y, width_factor, height_factor, centered) {
   var that = this;
@@ -324,7 +345,7 @@ var layout = {
     textSize(32);
     textAlign(CENTER, CENTER);
     textFont(this.font_1);
-    text(player.score + " / " + player.tries, 200, height-140);
+    text("Puntaje: " + player.score + " / " + player.tries, 265, height-110);
     if (player.showFPS) {
       textSize(26);
       text("FPS: " + Math.round(frameRate()), width-100, 40);
@@ -392,13 +413,14 @@ function setup() {
 
 function draw() {
   clear();
+  fcounter += 1;
   pentagram.drawdraw();
   for (var k in draw_items) {
     if (typeof(draw_items[k].loaded) === "undefined" || draw_items[k].loaded) {
-      if (draw_items[k].drawdraw) {
+      if (draw_items[k] && draw_items[k].drawdraw) {
         draw_items[k].drawdraw();
       }
-      if (draw_items[k].update) {
+      if (draw_items[k] && draw_items[k].update) {
           draw_items[k].update();
       }
     }

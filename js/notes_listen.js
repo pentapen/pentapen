@@ -154,7 +154,6 @@ var Cell = function(soundsound, x,y) {
         player.tries += 1;
         if (player.picked == that) {
           player.score += 1;
-          that.
           player.cooldown(true);
         }
         else {

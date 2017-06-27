@@ -436,10 +436,11 @@ var layout = {
 var saveload = {
   allfigs: [notes[1],notes[2],notes[4],notes[8],rests[1],rests[2],rests[4],rests[8]],
   decodeUrl: function() {
-    var rcode = /^.*#(([0-9][0-9a][0-7])+)$/.exec(window.location.href);
+    var rcode = /^.*#([0-5][0-9][0-9])(([0-9][0-9a][0-7])+)$/.exec(window.location.href);
     // console.log(rcode);
     if (!rcode) {return;}
-    code = rcode[1];
+    layout.bpm_slider.value(rcode[1]);  // set bpm
+    code = rcode[2];  // code representing notes | rests
     for (var i = 0; i < code.length; i+=3) {
       if (code[i] && code[i+1] && code[i+2]) {
         var digit_col = code[i];
@@ -458,7 +459,8 @@ var saveload = {
     return -1;
   },
   encodeUrl: function() {
-    var res = '';
+    var res = '' + layout.bpm_slider.value();
+    res = (res.length < 3 ? '0' : '') + res;  // append 0 at begging for bpm less than 100 (result: "080")
     for (var i = 0; i < cols.length; i++) {
       for (var j = 0; j < cols[i].cells.length; j++) {
         if (cols[i].cells[j].figure) {

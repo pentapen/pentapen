@@ -195,9 +195,9 @@ var Cell = function(soundsound, x,y, parent) {
     }
     that.figure_gif = null;
   };
-  this.attachFigure = function() {
-    that.figure = user.figure;
-    that.figure_gif = user.figure.get_gif(that.gif.x, that.gif.y);
+  this.attachFigure = function(fig) {
+    that.figure = fig;
+    that.figure_gif = fig.get_gif(that.gif.x, that.gif.y);
   };
   this.gif.whenclicked = function() {
     if (that.gif.hovered()) {
@@ -206,7 +206,7 @@ var Cell = function(soundsound, x,y, parent) {
       }
       else if (user.figure) {
         if (!user.figure.isRest) {
-          that.attachFigure();
+          that.attachFigure(user.figure);
         }
         else {
           that.parent.attachRest();
@@ -242,7 +242,7 @@ Column.prototype.removeAll = function() {
 };
 Column.prototype.attachRest = function() {
   this.removeAll();
-  this.maincell.attachFigure();
+  this.maincell.attachFigure(user.figure);
 };
 Column.prototype.playplay = function() {
   for (var i = 0; i < this.cells.length; i++) {
@@ -433,6 +433,45 @@ var layout = {
   },
 };
 
+var saveload = {
+  allfigs: [notes[1],notes[2],notes[4],notes[8],rests[1],rests[2],rests[4],rests[8]],
+  decodeUrl: function() {
+    var rcode = /^.*#(([0-9][0-9a][0-7])+)$/.exec(window.location.href);
+    // console.log(rcode);
+    if (!rcode) {return;}
+    code = rcode[1];
+    for (var i = 0; i < code.length; i+=3) {
+      if (code[i] && code[i+1] && code[i+2]) {
+        var digit_col = code[i];
+        var digit_row = code[i+1] == 'a' ? "10" : code[i+1];
+        var digit_fig = code[i+2];
+        cols[digit_col].cells[digit_row].attachFigure(saveload.allfigs[digit_fig]);
+      }
+    }
+  },
+  getFigNumber: function(fig) {
+    for (var i = 0; i < saveload.allfigs.length; i++) {
+      if (saveload.allfigs[i] == fig) {
+        return i;
+      }
+    }
+    return -1;
+  },
+  encodeUrl: function() {
+    var res = '';
+    for (var i = 0; i < cols.length; i++) {
+      for (var j = 0; j < cols[i].cells.length; j++) {
+        if (cols[i].cells[j].figure) {
+          res += i;
+          res += j == 10 ? 'a' : j;
+          res += saveload.getFigNumber(cols[i].cells[j].figure);
+        }
+      }
+    }
+    window.location.href = window.location.origin + window.location.pathname + '#' + res;
+  },
+};
+
 var Button = function(paf, x, y, action) {
   var that = this;
   this.x = x;
@@ -504,6 +543,8 @@ function setup() {
   for (i = 0; i < columns_number; i++) {
     cols.push(new Column(columns_x + i*columns_x_sep));
   }
+
+  saveload.decodeUrl();
 }
 
 var mills = 0;
@@ -548,14 +589,17 @@ function mouseClicked() {
 
 function keyPressed() {
   // console.log(keyCode);
-  if (keyCode === 32) {
+  if (keyCode === 32) {  // space
     layout.playbutt.hitplay();
   }
-  else if (keyCode === 70) {
+  else if (keyCode === 70) {  // f
     player.showFPS = !player.showFPS;
   }
-  else if (keyCode === 67) {
+  else if (keyCode === 67) {  // c
     player.clearNotes();
+  }
+  else if (keyCode === 83) {  // s
+    saveload.encodeUrl();
   }
   // return false;
 }

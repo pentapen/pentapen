@@ -1,5 +1,5 @@
 var LINKS = {
-  MAINMENU: "/index.html",
+  MAINMENU: "/main.html",
 };
 var id_counter = 0;
 var draw_items = {};
